@@ -1,25 +1,64 @@
+
 <template>
-    <header class="bg-gray-800 text-white py-4 px-6">
-        <div class="container mx-auto flex items-center justify-between">
-            <h1 class="text-2xl font-bold">My Website</h1>
-            <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="#" class="hover:text-gray-300">Home</a></li>
-                    <li><a href="#" class="hover:text-gray-300">About</a></li>
-                    <li><a href="#" class="hover:text-gray-300">Services</a></li>
-                    <li><a href="#" class="hover:text-gray-300">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div class="card">
+        <Menubar :model="items">
+            <template #item="{ item, props, hasSubmenu }">
+                <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                    <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+                        <span :class="item.icon" />
+                        <span class="ml-2">{{ item.label }}</span>
+                    </a>
+                </router-link>
+                <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
+                    <span :class="item.icon" />
+                    <span class="ml-2">{{ item.label }}</span>
+                    <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+                </a>
+            </template>
+        </Menubar>
+    </div>
 </template>
 
-<script>
-export default {
-    name: 'Header',
-}
-</script>
+<script setup lang="ts">
+import { ref } from "vue";
 
-<style scoped>
-/* Add any custom styles here */
-</style>
+const items = ref([
+    {
+        label: 'Home',
+        icon: 'pi pi-home',
+        route: '/'
+    },
+    {
+        label: 'Category',
+        icon: 'pi pi-search',
+        items: [
+            {
+                label: 'Components',
+                icon: 'pi pi-bolt'
+            },
+            {
+                label: 'Blocks',
+                icon: 'pi pi-server'
+            },
+            {
+                label: 'UI Kit',
+                icon: 'pi pi-pencil'
+            },
+            {
+                label: 'Templates',
+                icon: 'pi pi-palette',
+                items: [
+                    {
+                        label: 'Apollo',
+                        icon: 'pi pi-palette'
+                    },
+                    {
+                        label: 'Ultima',
+                        icon: 'pi pi-palette'
+                    }
+                ]
+            }
+        ]
+    }
+]);
+</script>
