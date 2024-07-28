@@ -59,6 +59,11 @@ const items = ref([
                 ]
             }
         ]
-    }
+    },
+    {
+        label: 'Cart',
+        icon: 'pi pi-shopping-cart',
+        route: '/cart'
+    },
 ]);
 </script>
