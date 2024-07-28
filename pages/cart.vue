@@ -8,6 +8,9 @@
         <button @click="removeFromCart(item.id)">Remove</button>
       </div>
     </div>
+    <NuxtLink to="/checkout">
+      <button>Checkout</button>
+    </NuxtLink>
   </template>
   
   <script setup>
