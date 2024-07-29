@@ -11,3 +11,6 @@ Shopping Cart:
 Checkout Page:
     - Summarize the cart contents.
     - Implement a simple form for user details (mock checkout process).
+
+
+- Add quantity to products
