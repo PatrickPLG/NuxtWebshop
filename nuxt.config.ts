@@ -16,4 +16,7 @@ export default defineNuxtConfig({
     }
   },
   css: ['primeicons/primeicons.css'],
+  plugins: [
+    '~/plugins/initCartStore.client.ts'
+  ],
 })

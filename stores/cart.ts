@@ -1,13 +1,23 @@
 import { defineStore } from "pinia";
 import type { Product } from '~/types/product';
 
+const STORE_NAME = "cart";
+
 interface CartState {
   cart: Product[];
 }
 
-export const useCartStore = defineStore("cart", {
+const getCart = () => {
+  if (typeof localStorage !== 'undefined') {
+    const cart = localStorage.getItem(STORE_NAME);
+    return cart ? JSON.parse(cart) : [];
+  }
+  return [];
+}
+
+export const useCartStore = defineStore(STORE_NAME, {
   state: (): CartState => ({
-    cart: [],
+    cart: getCart(),
   }),
   getters: {
     cartTotal: (state: CartState): number =>
@@ -19,18 +29,21 @@ export const useCartStore = defineStore("cart", {
     addProduct(product: Product) {
       const existingProduct = this.cart.find((item) => item.id === product.id);
       this.cart.push({ ...product });
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORE_NAME, JSON.stringify(this.cart));
+      }
     },
     removeProduct(productId: number) {
       this.cart = this.cart.filter((item) => item.id !== productId);
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORE_NAME, JSON.stringify(this.cart));
+      }
     },
-    // updateQuantity(productId: number, quantity: number) {
-    //   const product = this.cart.find((item) => item.id === productId);
-    //   if (product) {
-    //     product.quantity = quantity;
-    //   }
-    // },
     clearCart() {
       this.cart = [];
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORE_NAME, JSON.stringify(this.cart));
+      }
     },
   },
 });

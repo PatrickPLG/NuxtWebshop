@@ -1,4 +1,5 @@
 <template>
+    <Toast />
     <div>
       <div v-for="item in cart" :key="item.id">
         <p>{{ item.title }}</p>
@@ -16,12 +17,15 @@
   import { ref } from 'vue';
   import { useCartStore } from '~/stores/cart';
   
+  const toast = useToast();
   const cartStore = useCartStore();
   const cart = computed(() => cartStore.cart);
   const user = ref({ name: '', email: '' });
   
   function submitOrder() {
     console.log('Order submitted', cart.value, user.value);
+    cartStore.clearCart();
+    toast.add({ severity: 'success', summary: 'Order placed!', life: 3000 });
   }
   </script>
   

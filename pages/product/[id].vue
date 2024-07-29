@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import api from '~/services/api';
 import { useCartStore } from '~/stores/cart';
 import type { Product } from '~/types/product';
 
+const toast = useToast();
 const route = useRoute();
 const product = ref();
 const cartStore = useCartStore();
@@ -21,10 +20,12 @@ try {
 
 function addToCart(product: Product) {
   cartStore.addProduct(product);
+  toast.add({ severity: 'success', summary: 'Added to cart', detail: product.title, life: 3000 });
 }
 </script>
 
 <template>
+    <Toast />
     <div v-if="product">
       <h1>{{ product.title }}</h1>
       <p>{{ product.description }}</p>
