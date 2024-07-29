@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { useRoute } from '#imports';
 import api from '~/services/api';
 
 const categories = ref<{ label: string, icon: string, route: string }[]>([]);
@@ -29,7 +30,6 @@ onMounted(async () => {
             icon: category.icon,
             route: `/category/${category.category.toLowerCase()}`
         }));
-
         // Add categories to the 'Category' submenu
         const categoryMenu = items.value.find(item => item.label === 'Category');
         if (categoryMenu && categoryMenu.items) {
@@ -39,10 +39,13 @@ onMounted(async () => {
         console.error('Error fetching categories:', error);
     }
 });
+
+const route = useRoute();
+const isIndexPage = computed(() => route.path === '/');
 </script>
 
 <template>
-    <div class="card">
+    <div :class="{ 'mb-4': !isIndexPage }" class="card">
         <Menubar :model="items">
             <template #item="{ item, props, hasSubmenu }">
                 <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
@@ -60,3 +63,10 @@ onMounted(async () => {
         </Menubar>
     </div>
 </template>
+
+<style scoped>
+.mb-4 {
+    margin-bottom: 1rem;
+    /* Adjust the margin value as needed */
+}
+</style>
