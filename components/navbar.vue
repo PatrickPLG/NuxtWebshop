@@ -63,10 +63,3 @@ const isIndexPage = computed(() => route.path === '/');
         </Menubar>
     </div>
 </template>
-
-<style scoped>
-.mb-4 {
-    margin-bottom: 1rem;
-    /* Adjust the margin value as needed */
-}
-</style>
