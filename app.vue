@@ -7,6 +7,9 @@
     <NuxtRouteAnnouncer />
     
   </div> -->
-  <Navbar />
-  <NuxtPage />
+  <div class="p-component">
+    <Navbar />
+    <NuxtPage />
+  </div>
+
 </template>

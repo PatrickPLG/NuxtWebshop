@@ -1,6 +1,48 @@
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import api from '~/services/api';
+
+const categories = ref<{ label: string, icon: string, route: string }[]>([]);
+const items = ref([
+    {
+        label: 'Home',
+        icon: 'pi pi-home',
+        route: '/'
+    },
+    {
+        label: 'Category',
+        icon: 'pi pi-bars',
+        items: []
+    },
+    {
+        label: 'Cart',
+        icon: 'pi pi-shopping-cart',
+        route: '/cart'
+    },
+]);
+
+onMounted(async () => {
+    try {
+        const response = await api.getAllCategories();
+        categories.value = response.data.map(category => ({
+            label: category.category,
+            icon: category.icon,
+            route: `/category/${category.category.toLowerCase()}`
+        }));
+
+        // Add categories to the 'Category' submenu
+        const categoryMenu = items.value.find(item => item.label === 'Category');
+        if (categoryMenu && categoryMenu.items) {
+            (categoryMenu.items as { label: string; icon: string; route: string }[]).push(...categories.value);
+        }
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+});
+</script>
 
 <template>
-    <div class="card mb-5">
+    <div class="card">
         <Menubar :model="items">
             <template #item="{ item, props, hasSubmenu }">
                 <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
@@ -18,52 +60,3 @@
         </Menubar>
     </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from "vue";
-
-const items = ref([
-    {
-        label: 'Home',
-        icon: 'pi pi-home',
-        route: '/'
-    },
-    {
-        label: 'Category',
-        icon: 'pi pi-search',
-        items: [
-            {
-                label: 'Components',
-                icon: 'pi pi-bolt'
-            },
-            {
-                label: 'Blocks',
-                icon: 'pi pi-server'
-            },
-            {
-                label: 'UI Kit',
-                icon: 'pi pi-pencil'
-            },
-            {
-                label: 'Templates',
-                icon: 'pi pi-palette',
-                items: [
-                    {
-                        label: 'Apollo',
-                        icon: 'pi pi-palette'
-                    },
-                    {
-                        label: 'Ultima',
-                        icon: 'pi pi-palette'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        label: 'Cart',
-        icon: 'pi pi-shopping-cart',
-        route: '/cart'
-    },
-]);
-</script>

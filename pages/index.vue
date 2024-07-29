@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import api from '~/services/api';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
-import Image from 'primevue/image';
-import Tag from 'primevue/tag';
 import type { Product } from '~/types/product';
 
 const products: Ref<Product[]> = ref([]);
@@ -17,33 +13,18 @@ onMounted(async () => {
   }
 });
 
-const truncateTitle = (title: string, maxLength: number) => {
-  maxLength = maxLength || 20;
-  return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
-};
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-10 ml-5 mr-5">
-    <div v-for="product in products" :key="product.id">
-      <Card style="" class="">
-        <template #header>
-          <div class="relative mx-auto h-64 w-full overflow-hidden rounded-tr-md rounded-tl-md">
-            <Image :src="product.image" alt="Image" preview  />
-            <Tag icon="pi pi-dollar" :value="product.price" severity="secondary" class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
-          </div>
-        </template>
-        <template #title>{{ truncateTitle(product.title, 20) }}</template>
-        <template #subtitle>{{ product.category }}</template>
-        <template #footer>
-            <div class="flex gap-4 mt-1">
-                <!-- <Button label="Cancel" severity="secondary" outlined class="w-full" /> -->
-                <NuxtLink class="w-full":to="{ name: 'product-id', params: { id: product.id } }">
-                  <Button label="View" icon="pi pi-search" class="w-full" />
-                </NuxtLink>
-            </div>
-        </template>
-      </Card>
+  <div class="grid grid-cols-2 text-800 mb-12">
+    <div class="place-content-center ml-5 text-center">
+      <p class="block text-6xl font-bold mb-1">Webshop website</p>
+      <p class="block text-2xl mr-20">The best place to shop for your needs!</p>
+
+    </div>
+    <div class="mr-5">
+      <img src="public/hero-1.png" class="w-full" alt="" style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)">
     </div>
   </div>
+  <Productgrid :products="products" />
 </template>
