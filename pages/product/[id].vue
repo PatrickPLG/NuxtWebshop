@@ -12,15 +12,20 @@ onMounted(async () => {
   try {
     const response = await api.getProduct(parseInt(route.params.id.toString()));
     product.value = response.data;
+    product.value.quantity = 1;
     console.log('Product:', product.value);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
 });
 
-function addToCart(product: Product) {
-  cartStore.addProduct(product);
-  toast.add({ severity: 'success', summary: 'Added to cart', detail: product.title, life: 3000 });
+function addToCart(product: Product, quantity: number) {
+  if (quantity === 0 || quantity === null) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Quantity cannot be 0', life: 3000 });
+    return;
+  }
+  cartStore.addProduct(product, quantity);
+  toast.add({ severity: 'success', summary: 'Added to cart', detail: `${quantity}x ${product.title}`, life: 3000 });
 }
 </script>
 
@@ -56,10 +61,11 @@ function addToCart(product: Product) {
                 {{ product.description }}
               </p>
             </div>
-            <div class="mb-4">
-              <Button label="Add to cart" @click="addToCart(product)" icon="pi pi-shopping-cart" class="w-full" />
+            <div class="grid grid-cols-2 mb-4">
               <InputNumber v-model="product.quantity" inputId="minmax-buttons" mode="decimal" showButtons :min="1"
-                :max="100" fluid class="" />
+                :invalid="product.quantity === null" />
+              <Button label="Add to cart" @click="addToCart(product, product.quantity)" icon="pi pi-shopping-cart"
+                class="w-full" />
             </div>
           </div>
         </div>

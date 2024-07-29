@@ -17,7 +17,7 @@ const truncateTitle = (title: string, maxLength: number) => {
                 <template #header>
                     <div class="relative mx-auto h-64 w-full overflow-hidden rounded-tr-md rounded-tl-md">
                         <Image :src="product.image" alt="Image" preview />
-                        <Tag icon="pi pi-dollar" :value="product.price" severity="primary"
+                        <Tag icon="pi pi-dollar" :value="product.price.toFixed(2)" severity="primary"
                             class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
                     </div>
                 </template>
