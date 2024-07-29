@@ -1,8 +1,20 @@
-# Nuxt 3 Minimal Starter
+# Webshop example store
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A simple webshop built in Nuxt to my showcase skills in the Nuxt Framework and the used tools/libraries etc.
 
-## Setup
+## Tech Stack
+
+**Nuxt, Vue, Pinia, PrimeVue and TailwindCSS**
+
+## Features
+
+- Product detail page
+- Add products to cart
+- Remove products from cart
+- "Checkout" products in cart
+- Filter products after category
+
+## Run Locally
 
 Make sure to install the dependencies:
 
@@ -38,38 +50,27 @@ yarn dev
 bun run dev
 ```
 
-## Production
+## Authors
 
-Build the application for production:
+- [@PatrickPLG](https://www.github.com/PatrickPLG)
 
-```bash
-# npm
-npm run build
+## Roadmap
 
-# pnpm
-pnpm run build
+1. Product Listing Page:
+   - [x] Display a list of products fetched from a mock API.
+   - [x] Implement filtering and sorting functionality.
+2. Product Details Page:
+   - [x] Show detailed information about a selected product.
+   - [x] Include an “Add to Cart” button.
+3. Shopping Cart:
+   - [x] Display a list of products added to the cart.
+   - [ ] Allow users to adjust quantities
+   - [x] remove items.
+4. Checkout Page:
 
-# yarn
-yarn build
+   - [x] Summarize the cart contents.
+   - [x] Implement a simple form for user details (mock checkout process).
 
-# bun
-bun run build
-```
+5. Other
 
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- [ ] Support other devices like mobile
