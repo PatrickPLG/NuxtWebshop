@@ -28,7 +28,11 @@ export const useCartStore = defineStore(STORE_NAME, {
   actions: {
     addProduct(product: Product) {
       const existingProduct = this.cart.find((item) => item.id === product.id);
-      this.cart.push({ ...product });
+      if (existingProduct) {
+        existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+      } else {
+        this.cart.push({ ...product, quantity: 1 });
+      }
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORE_NAME, JSON.stringify(this.cart));
       }

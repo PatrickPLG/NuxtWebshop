@@ -58,17 +58,13 @@ function addToCart(product: Product) {
             </div>
             <div class="mb-4">
               <Button label="Add to cart" @click="addToCart(product)" icon="pi pi-shopping-cart" class="w-full" />
+              <InputNumber v-model="product.quantity" inputId="minmax-buttons" mode="decimal" showButtons :min="1"
+                :max="100" fluid class="" />
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <h1>{{ product.title }}</h1>
-      <p>{{ product.description }}</p>
-      <p>{{ product.price }}</p>
-      <img :src="product.image" alt="product image">
-      <button @click="addToCart(product)">Add to Cart</button> -->
   </div>
   <div v-else>
     <p>Loading...</p>

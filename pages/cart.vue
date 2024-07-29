@@ -29,8 +29,8 @@
                       <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">Quantity</span>
                       <!-- Add v-model: item.quantity -->
                       <div class="flex flex-col mt-2 w-20 h-12">
-                        <InputNumber inputId="minmax-buttons" mode="decimal" showButtons :min="0" :max="100" fluid
-                          class="" />
+                        <InputNumber v-model="item.quantity" inputId="minmax-buttons" mode="decimal" showButtons
+                          :min="0" :max="100" fluid class="" placeholder="1" />
                       </div>
                     </div>
                   </div>
