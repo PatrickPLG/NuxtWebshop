@@ -7,14 +7,6 @@ interface CartState {
   cart: Product[];
 }
 
-const getCart = () => {
-  if (typeof localStorage !== 'undefined') {
-    const cart = localStorage.getItem(STORE_NAME);
-    return cart ? JSON.parse(cart) : [];
-  }
-  return [];
-}
-
 export const useCartStore = defineStore(STORE_NAME, {
   state: (): CartState => ({
     cart: [],
