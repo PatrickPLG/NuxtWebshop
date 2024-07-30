@@ -1,5 +1,10 @@
-<script lang="ts">
-const user = ref({ name: '', email: '', phone: '', address: '' });
+<script setup lang="ts">
+import type { User } from '~/types/user';
+
+const props = defineProps<{
+    user: User;
+}>();
+
 </script>
 
 <template>
