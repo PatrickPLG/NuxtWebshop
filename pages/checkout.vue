@@ -31,7 +31,6 @@ function cancelOrder() {
 
 
 <template>
-  <Toast />
   <div v-if="cart.length > 0">
     <div class="flex justify-center items-center">
       <Card class="w-7/12 p-6 shadow-lg rounded-lg">

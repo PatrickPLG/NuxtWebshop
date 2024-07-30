@@ -21,7 +21,6 @@ function addToCart(product: Product, quantity: number) {
 </script>
 
 <template>
-    <Toast />
     <Button :label="props.buttonLabel"
         @click="addToCart(props.product, props.product.quantity ? props.product.quantity : 1)"
         icon="pi pi-shopping-cart" class="w-full" />

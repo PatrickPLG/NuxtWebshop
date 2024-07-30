@@ -45,6 +45,7 @@ const isIndexPage = computed(() => route.path === '/');
 </script>
 
 <template>
+    <Toast />
     <div :class="{ 'mb-4': !isIndexPage }" class="card">
         <Menubar :model="items">
             <template #item="{ item, props, hasSubmenu }">

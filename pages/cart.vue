@@ -41,7 +41,6 @@ watch(cart, (newCart) => {
 
 <template>
   <div v-if="cart.length > 0">
-    <Toast />
     <div class="flex justify-center items-center mb-5">
       <Card class="w-11/12">
         <template #content>
