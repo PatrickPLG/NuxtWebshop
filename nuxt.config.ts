@@ -10,7 +10,8 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@primevue/nuxt-module',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
   primevue: {
     options: {
@@ -25,7 +26,4 @@ export default defineNuxtConfig({
     }
   },
   css: ['primeicons/primeicons.css'],
-  plugins: [
-    '~/plugins/initCartStore.client.ts'
-  ],
 })
