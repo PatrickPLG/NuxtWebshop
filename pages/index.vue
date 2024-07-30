@@ -16,15 +16,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-2 text-800 mb-12">
-    <div class="place-content-center ml-5 text-center">
-      <p class="block text-6xl font-bold mb-1">Webshop website</p>
-      <p class="block text-2xl mr-20">The best place to shop for your needs!</p>
-
-    </div>
-    <div class="mr-5">
-      <img src="public/hero-1.png" class="w-full" alt="" style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)">
-    </div>
-  </div>
+  <Hero title="Webshop website" description="The best place to shop for your needs!" image="/images/hero-1.png" />
   <Productgrid :products="products" />
 </template>
