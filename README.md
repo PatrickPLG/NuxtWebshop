@@ -26,7 +26,7 @@ A simple webshop built in Nuxt to my showcase skills in the Nuxt Framework and t
    - [x] Include an “Add to Cart” button.
 3. Shopping Cart:
    - [x] Display a list of products added to the cart.
-   - [ ] Allow users to adjust quantities
+   - [x] Allow users to adjust quantities
    - [x] remove items.
 4. Checkout Page:
 
