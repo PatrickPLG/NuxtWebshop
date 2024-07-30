@@ -17,5 +17,5 @@ onMounted(async () => {
 
 <template>
   <Hero title="Webshop website" description="The best place to shop for your needs!" image="/images/hero-1.png" />
-  <Productgrid :products="products" />
+  <ProductGrid :products="products" />
 </template>

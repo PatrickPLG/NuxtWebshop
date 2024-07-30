@@ -15,5 +15,5 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <Productgrid :products="products" />
+    <ProductGrid :products="products" />
 </template>
