@@ -1,55 +1,59 @@
 <template>
+
   <div v-if="cart.length > 0">
-    <div class="grid grid-cols-3">
-      <div class="col-start-2 text-center justify-self-center mt-3 text-lg font-medium">
-        Total: <span class="font-bold">${{ cartTotal.toFixed(2) }}</span>
-      </div>
-      <div class="col-start-3 justify-self-end mt-2 mr-4">
-        <NuxtLink to="/checkout" class="">
-          <Button label="Proceed to Checkout" icon="pi pi-shopping-cart" class="" />
-        </NuxtLink>
-      </div>
-    </div>
-    <DataView :value="cart">
-      <template #list="slotProps">
-        <div class="flex flex-col">
-          <div v-for="(item, index) in slotProps.items" :key="index">
-            <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-              :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
-              <div class="md:w-40 relative">
-                <img class="block xl:block mx-auto rounded w-full" :src="item.image" :alt="item.name" />
+    <Toast />
+    <div class="flex justify-center items-center mb-5">
+      <Card class="w-11/12">
+        <template #content>
+          <DataTable :value="cart" tableStyle="min-width: 50rem">
+            <template #header>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-xl font-bold">Cart summery</span>
               </div>
-              <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-                <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                  <div>
-                    <div class="text-lg font-medium mt-2">
-                      {{ item.title }}
-                    </div>
-                    <div class="mt-6">
-                      <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">Quantity</span>
-                      <!-- Add v-model: item.quantity -->
-                      <div class="mt-2 h-12">
-                        <InputNumber v-model="item.quantity" inputId="minmax-buttons" mode="decimal" showButtons
-                          :min="0" :max="100" class="" style="width: 200px;" />
-                      </div>
-                    </div>
-                  </div>
+            </template>
+            <Column field="title" header="Product name"></Column>
+            <Column header="">
+              <template #body="slotProps">
+                <img :src="slotProps.data.image" :alt="slotProps.data.image" class="w-24 rounded" />
+              </template>
+            </Column>
+            <Column field="quantity" header="Quantity">
+              <template #body="slotProps">
+                <div class="">
+                  <InputNumber v-model="slotProps.data.quantity" inputId="minmax-buttons" mode="decimal" showButtons
+                    :min="0" :max="100" class="" style="" />
                 </div>
-                <div class="flex flex-col md:items-end gap-8">
-                  <span class="text-xl font-semibold">${{ (item.price * item.quantity).toFixed(2) }}</span>
-                  <div class="flex flex-row-reverse md:flex-row gap-2">
-                    <Button icon="pi pi-trash" severity="danger" @click="removeFromCart(item.id)" label="Remove" />
-                  </div>
-                </div>
+              </template>
+            </Column>
+            <Column field="price" header="Price">
+              <template #body="slotProps">
+                <span>${{ (slotProps.data.price * slotProps.data.quantity).toFixed(2) }}</span>
+              </template>
+            </Column>
+            <Column field="remove">
+              <template #body="slotProps">
+                <Button icon="pi pi-trash" severity="danger" @click="removeFromCart(slotProps.data.id)" label="" />
+              </template>
+            </Column>
+            <template #footer>
+              <div class="flex justify-end items-end">
+                In total there are {{ totalQuantity }} products, totaling $<span class="text-bold">{{
+                  cartTotal.toFixed(2) }}</span>.
               </div>
-            </div>
+            </template>
+          </DataTable>
+        </template>
+        <template #footer>
+          <div class="flex justify-end items-end gap-4 mt-1">
+            <Button label="Cancel order" severity="danger" outlined class="w-32" @click="cancelOrder" />
+            <NuxtLink to="/checkout" class="">
+              <Button label="Proceed to Checkout" icon="pi pi-shopping-cart" class="w-64" />
+            </NuxtLink>
           </div>
-        </div>
-      </template>
-    </DataView>
-
+        </template>
+      </Card>
+    </div>
   </div>
-
   <div v-else>
     <div class="text-center">
       <h1 class="text-2xl font-semibold">Your cart is empty</h1>
@@ -61,14 +65,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref } from 'vue';
 import { useCartStore } from '~/stores/cart';
+
 const toast = useToast();
 const cartStore = useCartStore();
 const cart = computed(() => cartStore.cart);
+
 const cartTotal = computed(() =>
   cart.value.reduce((acc, item) => acc + (item.price * item.quantity), 0)
 );
+const totalQuantity = computed(() => {
+  return cart.value.reduce((total, product) => total + product.quantity, 0);
+});
 watch(
   () => useCartStore().cart,
   (newCart) => {
@@ -80,6 +89,13 @@ function removeFromCart(id: number) {
   cartStore.removeProduct(id);
   toast.add({ severity: 'success', summary: 'Removed from cart', life: 3000 });
 }
+
+function cancelOrder() {
+  console.log('Order cancelled');
+  cartStore.clearCart();
+  toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
+}
+
 watch(cart, (newCart) => {
   newCart.forEach(item => {
     if (item.quantity === 0) {

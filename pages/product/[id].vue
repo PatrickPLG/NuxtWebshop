@@ -63,7 +63,7 @@ function addToCart(product: Product, quantity: number) {
             </div>
             <div class="grid grid-cols-2 mb-4">
               <InputNumber v-model="product.quantity" inputId="minmax-buttons" mode="decimal" showButtons :min="1"
-                :invalid="product.quantity === null" />
+                :max="100" :invalid="product.quantity === null" />
               <Button label="Add to cart" @click="addToCart(product, product.quantity)" icon="pi pi-shopping-cart"
                 class="w-full" />
             </div>

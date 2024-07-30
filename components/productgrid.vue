@@ -13,15 +13,19 @@ const truncateTitle = (title: string, maxLength: number) => {
 };
 
 const sortOptions = [
+    { label: 'Default', value: 'default' },
     { label: 'Price: Low to High', value: 'priceAsc' },
     { label: 'Price: High to Low', value: 'priceDesc' },
-    { label: 'A to Z', value: 'titleAsc' },
-    { label: 'Z to A', value: 'titleDesc' },
+    { label: 'Title: A to Z', value: 'titleAsc' },
+    { label: 'Title: Z to A', value: 'titleDesc' },
 ];
 
-const selectedSortOption = ref('priceAsc');
+const selectedSortOption = ref('default');
 
 const sortedProducts = computed(() => {
+    if (selectedSortOption.value === 'default') {
+        return props.products;
+    }
     return [...props.products].sort((a, b) => {
         switch (selectedSortOption.value) {
             case 'priceAsc':
@@ -68,5 +72,7 @@ const sortedProducts = computed(() => {
                 </Card>
             </div>
         </div>
+        <ScrollTop />
     </div>
+
 </template>
