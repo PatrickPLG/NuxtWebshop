@@ -17,8 +17,9 @@ const getCart = () => {
 
 export const useCartStore = defineStore(STORE_NAME, {
   state: (): CartState => ({
-    cart: getCart(),
+    cart: [],
   }),
+  persist: true,
   getters: {
     cartTotal: (state: CartState): number =>
       state.cart.reduce((total, item) => total + item.price * item.quantity, 0),
@@ -33,20 +34,12 @@ export const useCartStore = defineStore(STORE_NAME, {
       } else {
         this.cart.push({ ...product, quantity });
       }
-      this.saveCart();
     },
     removeProduct(productId: number) {
       this.cart = this.cart.filter((item) => item.id !== productId);
-      this.saveCart();
     },
     clearCart() {
       this.cart = [];
-      this.saveCart();
     },
-    saveCart() {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem(STORE_NAME, JSON.stringify(this.cart));
-      }
-    }
   },
 });

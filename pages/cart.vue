@@ -4,6 +4,7 @@ import { useCartStore } from '~/stores/cart';
 
 const toast = useToast();
 const cartStore = useCartStore();
+
 const cart = computed(() => cartStore.cart);
 
 const cartTotal = computed(() =>
@@ -12,13 +13,6 @@ const cartTotal = computed(() =>
 const totalQuantity = computed(() => {
   return cart.value.reduce((total, product) => total + product.quantity, 0);
 });
-watch(
-  () => useCartStore().cart,
-  (newCart) => {
-    useCartStore().saveCart();
-  },
-  { deep: true }
-);
 function removeFromCart(id: number) {
   cartStore.removeProduct(id);
   toast.add({ severity: 'success', summary: 'Removed from cart', life: 3000 });
