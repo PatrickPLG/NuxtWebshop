@@ -67,7 +67,7 @@ const sortedProducts = computed(() => {
                             <NuxtLink class="w-full" :to="{ name: 'product-id', params: { id: product.id } }">
                                 <Button label="See more" severity="secondary" icon="pi pi-search" class="w-full" />
                             </NuxtLink>
-                            <AddToCartButton :product="product" />
+                            <ProductAddToCartButton :product="product" />
                         </div>
                     </template>
                 </Card>

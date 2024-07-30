@@ -1,5 +1,45 @@
-<template>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useCartStore } from '~/stores/cart';
 
+const toast = useToast();
+const cartStore = useCartStore();
+const cart = computed(() => cartStore.cart);
+
+const cartTotal = computed(() =>
+  cart.value.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+);
+const totalQuantity = computed(() => {
+  return cart.value.reduce((total, product) => total + product.quantity, 0);
+});
+watch(
+  () => useCartStore().cart,
+  (newCart) => {
+    useCartStore().saveCart();
+  },
+  { deep: true }
+);
+function removeFromCart(id: number) {
+  cartStore.removeProduct(id);
+  toast.add({ severity: 'success', summary: 'Removed from cart', life: 3000 });
+}
+
+function cancelOrder() {
+  console.log('Order cancelled');
+  cartStore.clearCart();
+  toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
+}
+
+watch(cart, (newCart) => {
+  newCart.forEach(item => {
+    if (item.quantity === 0) {
+      removeFromCart(item.id);
+    }
+  });
+}, { deep: true });
+</script>
+
+<template>
   <div v-if="cart.length > 0">
     <Toast />
     <div class="flex justify-center items-center mb-5">
@@ -46,61 +86,13 @@
         <template #footer>
           <div class="flex justify-end items-end gap-4 mt-1">
             <Button label="Cancel order" severity="danger" outlined class="w-32" @click="cancelOrder" />
-            <NuxtLink to="/checkout" class="">
-              <Button label="Proceed to Checkout" icon="pi pi-shopping-cart" class="w-64" />
-            </NuxtLink>
+            <ButtonLink label="Proceed to Checkout" icon="pi pi-shopping-cart" link="/checkout" />
           </div>
         </template>
       </Card>
     </div>
   </div>
   <div v-else>
-    <div class="text-center">
-      <h1 class="text-2xl font-semibold">Your cart is empty</h1>
-      <NuxtLink to="/">
-        <Button label="Go to Shop" icon="pi pi-shopping-cart" class="mt-4" />
-      </NuxtLink>
-    </div>
+    <EmptyCart />
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useCartStore } from '~/stores/cart';
-
-const toast = useToast();
-const cartStore = useCartStore();
-const cart = computed(() => cartStore.cart);
-
-const cartTotal = computed(() =>
-  cart.value.reduce((acc, item) => acc + (item.price * item.quantity), 0)
-);
-const totalQuantity = computed(() => {
-  return cart.value.reduce((total, product) => total + product.quantity, 0);
-});
-watch(
-  () => useCartStore().cart,
-  (newCart) => {
-    useCartStore().saveCart();
-  },
-  { deep: true }
-);
-function removeFromCart(id: number) {
-  cartStore.removeProduct(id);
-  toast.add({ severity: 'success', summary: 'Removed from cart', life: 3000 });
-}
-
-function cancelOrder() {
-  console.log('Order cancelled');
-  cartStore.clearCart();
-  toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
-}
-
-watch(cart, (newCart) => {
-  newCart.forEach(item => {
-    if (item.quantity === 0) {
-      removeFromCart(item.id);
-    }
-  });
-}, { deep: true });
-</script>

@@ -1,3 +1,35 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import EmptyCart from '~/components/EmptyCart.vue';
+import { useCartStore } from '~/stores/cart';
+
+const toast = useToast();
+const cartStore = useCartStore();
+const cart = computed(() => cartStore.cart);
+const user = ref({ name: '', email: '', phone: '', address: '' });
+const cartTotal = computed(() =>
+  cart.value.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+);
+const totalQuantity = computed(() => {
+  return cart.value.reduce((total, product) => total + product.quantity, 0);
+});
+function submitOrder() {
+  if (!user.value.name || !user.value.email || !user.value.phone || !user.value.address) {
+    toast.add({ severity: 'error', summary: 'Validation Error', detail: 'All fields are required', life: 3000 });
+    return;
+  }
+  console.log('Order submitted', cart.value, user.value);
+  cartStore.clearCart();
+  toast.add({ severity: 'success', summary: 'Order placed!', life: 3000 });
+}
+function cancelOrder() {
+  console.log('Order cancelled');
+  cartStore.clearCart();
+  toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
+}
+</script>
+
+
 <template>
   <Toast />
   <div v-if="cart.length > 0">
@@ -60,41 +92,6 @@
     </div>
   </div>
   <div v-else>
-    <div class="text-center">
-      <h1 class="text-2xl font-semibold">Your cart is empty</h1>
-      <NuxtLink to="/">
-        <Button label="Go to Shop" icon="pi pi-shopping-cart" class="mt-4" />
-      </NuxtLink>
-    </div>
+    <EmptyCart />
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useCartStore } from '~/stores/cart';
-
-const toast = useToast();
-const cartStore = useCartStore();
-const cart = computed(() => cartStore.cart);
-const user = ref({ name: '', email: '', phone: '', address: '' });
-const cartTotal = computed(() =>
-  cart.value.reduce((acc, item) => acc + (item.price * item.quantity), 0)
-);
-const totalQuantity = computed(() => {
-  return cart.value.reduce((total, product) => total + product.quantity, 0);
-});
-function submitOrder() {
-  if (!user.value.name || !user.value.email || !user.value.phone || !user.value.address) {
-    toast.add({ severity: 'error', summary: 'Validation Error', detail: 'All fields are required', life: 3000 });
-    return;
-  }
-  console.log('Order submitted', cart.value, user.value);
-  cartStore.clearCart();
-  toast.add({ severity: 'success', summary: 'Order placed!', life: 3000 });
-}
-function cancelOrder() {
-  console.log('Order cancelled');
-  cartStore.clearCart();
-  toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
-}
-</script>

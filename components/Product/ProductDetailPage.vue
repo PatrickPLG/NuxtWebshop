@@ -38,7 +38,9 @@ const props = defineProps<{ product: Product }>();
                     <div class="grid grid-cols-2 mb-4">
                         <InputNumber v-model="product.quantity" inputId="minmax-buttons" mode="decimal" showButtons
                             :min="1" :max="100" :invalid="product.quantity === null" />
-                        <AddToCartButton :product="product" buttonLabel="Add to cart" />
+                        <div class="ml-4">
+                            <ProductAddToCartButton :product="product" buttonLabel="Add to cart" />
+                        </div>
                     </div>
                 </div>
             </div>
