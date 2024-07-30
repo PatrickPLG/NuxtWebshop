@@ -10,7 +10,6 @@ const cartStore = useCartStore();
 
 
 function addToCart(product: Product, quantity: number) {
-    console.log('Adding to cart:', product, quantity);
     if (quantity === 0 || quantity === null) {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Quantity cannot be 0', life: 3000 });
         return;

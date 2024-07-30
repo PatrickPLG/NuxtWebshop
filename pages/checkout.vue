@@ -18,12 +18,10 @@ function submitOrder() {
     toast.add({ severity: 'error', summary: 'Validation Error', detail: 'All fields are required', life: 3000 });
     return;
   }
-  console.log('Order submitted', cart.value, user.value);
   cartStore.clearCart();
   toast.add({ severity: 'success', summary: 'Order placed!', life: 3000 });
 }
 function cancelOrder() {
-  console.log('Order cancelled');
   cartStore.clearCart();
   toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
 }

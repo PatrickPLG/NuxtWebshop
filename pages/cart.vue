@@ -25,7 +25,6 @@ function removeFromCart(id: number) {
 }
 
 function cancelOrder() {
-  console.log('Order cancelled');
   cartStore.clearCart();
   toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });
 }

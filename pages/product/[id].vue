@@ -8,7 +8,6 @@ onMounted(async () => {
     const response = await api.getProduct(parseInt(route.params.id.toString()));
     product.value = response.data;
     product.value.quantity = 1;
-    console.log('Product:', product.value);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
