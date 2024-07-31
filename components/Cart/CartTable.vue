@@ -18,9 +18,9 @@ watch(cart, (newCart) => {
 
 
 <template>
-    <Card class="w-11/12">
+    <Card class="w-11/12 shadow-lg rounded-lg">
         <template #content>
-            <DataTable :value="cart" tableStyle="min-width: 50rem">
+            <DataTable :value="cart" tableStyle="min-width: 50rem" class="">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">Cart summery</span>

@@ -10,6 +10,6 @@
   <div class="p-component">
     <Navbar />
     <NuxtPage />
+    <Footer />
   </div>
-
 </template>

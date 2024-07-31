@@ -8,8 +8,10 @@ const cart = computed(() => cartStore.cart);
 
 <template>
   <div v-if="cart.length > 0">
-    <div class="flex justify-center items-center mb-5">
-      <CartTable />
+    <div class="h-full">
+      <div class="flex justify-center items-center">
+        <CartTable />
+      </div>
     </div>
   </div>
   <div v-else>

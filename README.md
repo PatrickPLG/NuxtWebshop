@@ -7,6 +7,7 @@ A simple webshop built in Nuxt to my showcase skills in the Nuxt Framework and t
 **Nuxt, Vue, Pinia, PrimeVue and TailwindCSS**
 
 - Uses LocalStorage with Pinia to save store
+- Uses [FakeStoreAPI](https://fakestoreapi.com/) to fetch products
 
 ## Features
 
