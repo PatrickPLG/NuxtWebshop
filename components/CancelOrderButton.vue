@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 const toast = useToast();
-const cartStore = useCartStore();
 
+const { cartStore } = useCart();
 function cancelOrder() {
     cartStore.clearCart();
     toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });

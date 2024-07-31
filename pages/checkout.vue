@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import EmptyCart from '~/components/EmptyCart.vue';
-import { useCartStore } from '~/stores/cart';
 
-const cartStore = useCartStore();
-const cart = computed(() => cartStore.cart);
+const { cart } = useCart();
 </script>
 
 

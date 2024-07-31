@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useCartStore } from '~/stores/cart';
 import type { Product } from '~/types/product';
 
 const props = defineProps<{ product: Product, buttonLabel?: string }>();
 
 
 const toast = useToast();
-const cartStore = useCartStore();
+const { cartStore } = useCart();
 
 
 function addToCart(product: Product, quantity: number) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const cartStore = useCartStore();
+
 const toast = useToast();
-const cart = computed(() => cartStore.cart);
+const { cart, cartStore } = useCart();
 
 function removeFromCart(id: number) {
     cartStore.removeProduct(id);

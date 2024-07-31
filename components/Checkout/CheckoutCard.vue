@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { User } from '~/types/user';
-const cartStore = useCartStore();
+const { cartStore } = useCart();
 const user = ref<User>({
     name: '',
     email: '',
