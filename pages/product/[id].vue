@@ -2,7 +2,6 @@
 import api from '~/services/api';
 const route = useRoute();
 const product = ref();
-
 onMounted(async () => {
   try {
     const response = await api.getProduct(parseInt(route.params.id.toString()));
@@ -20,6 +19,6 @@ onMounted(async () => {
     <ProductDetailPage :product="product" />
   </div>
   <div v-else>
-    <p>Loading...</p>
+    <SkeletonProductDetailPage />
   </div>
 </template>

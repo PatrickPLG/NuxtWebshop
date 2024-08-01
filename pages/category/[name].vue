@@ -4,16 +4,23 @@ import type { Product } from '~/types/product';
 
 const products: Ref<Product[]> = ref([]);
 const route = useRoute();
+const isLoading = ref(true);
 
 onMounted(async () => {
     try {
         const response = await api.getProductByCategory(route.params.name.toString());
         products.value = response.data;
+        isLoading.value = false;
     } catch (error) {
         console.error('Error fetching products:', error);
     }
 });
 </script>
 <template>
-    <ProductGrid :products="products" />
+    <div v-if="isLoading">
+        <SkeletonProductGrid />
+    </div>
+    <div v-else>
+        <ProductGrid :products="products" />
+    </div>
 </template>
