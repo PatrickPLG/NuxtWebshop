@@ -46,8 +46,8 @@ const isIndexPage = computed(() => route.path === '/');
 
 <template>
     <Toast />
-    <div :class="{ 'mb-4': !isIndexPage }" class="card">
-        <Menubar :model="items">
+    <div :class="[{ 'mb-4': !isIndexPage }, 'sticky top-0 z-50 shadow-md bg-white']" class="card">
+        <Menubar :model="items" class="rounded-none w-full">
             <template #item="{ item, props, hasSubmenu }">
                 <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
                     <a v-ripple :href="href" v-bind="props.action" @click="navigate">
