@@ -2,7 +2,7 @@
 
 const toast = useToast();
 
-const { cartStore } = useCart();
+const cartStore = useCartStore();
 function cancelOrder() {
     cartStore.clearCart();
     toast.add({ severity: 'info', summary: 'Order cancelled', life: 3000 });

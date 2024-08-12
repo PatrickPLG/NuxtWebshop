@@ -5,7 +5,7 @@ const props = defineProps<{ product: Product, buttonLabel?: string }>();
 
 
 const toast = useToast();
-const { cartStore } = useCart();
+const cartStore = useCartStore();
 
 
 function addToCart(product: Product, quantity: number) {

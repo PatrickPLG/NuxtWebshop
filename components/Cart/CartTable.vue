@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
 const toast = useToast();
-const { cart, cartStore } = useCart();
+const cartStore = useCartStore();
 
 function removeFromCart(id: number) {
     cartStore.removeProduct(id);
     toast.add({ severity: 'success', summary: 'Removed from cart', life: 3000 });
 }
-watch(cart, (newCart) => {
+watch(cartStore.Cart, (newCart) => {
     newCart.forEach(item => {
         if (item.quantity === 0) {
             removeFromCart(item.id);
@@ -20,7 +20,7 @@ watch(cart, (newCart) => {
 <template>
     <Card class="w-11/12 shadow-lg rounded-lg">
         <template #content>
-            <DataTable :value="cart" tableStyle="min-width: 50rem" class="">
+            <DataTable :value="cartStore.Cart" tableStyle="min-width: 50rem" class="">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">Cart summery</span>

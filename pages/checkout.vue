@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import EmptyCart from '~/components/EmptyCart.vue';
 
-const { cart } = useCart();
+const cartStore = useCartStore();
 </script>
 
 
 <template>
-  <div v-if="cart.length > 0">
+  <div v-if="cartStore.Cart.length > 0">
     <div class="flex justify-center items-center">
       <CheckoutCard />
     </div>

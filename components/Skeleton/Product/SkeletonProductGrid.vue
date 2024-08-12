@@ -8,7 +8,7 @@
             <Skeleton width="12rem" height="2.5rem" />
         </div>
         <div class="grid grid-cols-3 gap-10">
-            <div v-for="n in 6" :key="n">
+            <div v-for="n in 10" :key="n">
                 <Card>
                     <template #header>
                         <Skeleton class="h-96 w-full" />

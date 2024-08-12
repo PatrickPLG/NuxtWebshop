@@ -5,7 +5,7 @@ const props = defineProps<{
     user: User;
 }>();
 
-const { cartStore } = useCart();
+const cartStore = useCartStore();
 
 function submitOrder(user: User) {
     if (!user.name || !user.email || !user.phone || !user.address) {
