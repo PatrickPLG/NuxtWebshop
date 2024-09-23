@@ -18,7 +18,7 @@ watch(cartStore.Cart, (newCart) => {
 
 
 <template>
-    <Card class="w-11/12 shadow-lg rounded-lg">
+    <Card class="w-full md:w-11/12 shadow-lg rounded-lg">
         <template #content>
             <DataTable :value="cartStore.Cart" tableStyle="min-width: 50rem" class="">
                 <template #header>

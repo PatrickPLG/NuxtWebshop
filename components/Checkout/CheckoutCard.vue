@@ -10,7 +10,7 @@ const user = ref<User>({
 </script>
 
 <template>
-    <Card class="w-7/12 p-6 shadow-lg rounded-lg">
+    <Card class="w-full md:w-7/12 p-6 shadow-lg rounded-lg">
         <template #title>
             <div class="flex items-center">
                 <i class="pi pi-shopping-cart mr-2"></i>
