@@ -49,7 +49,7 @@ const sortedProducts = computed(() => {
             <Select v-model="selectedSortOption" :options="sortOptions" optionLabel="label" optionValue="value"
                 placeholder="Sort By" class="w-48" />
         </div>
-        <div class="grid grid-cols-3 gap-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
             <div v-for="product in sortedProducts" :key="product.id">
                 <Card style="" class="">
                     <template #header>
@@ -75,5 +75,4 @@ const sortedProducts = computed(() => {
         </div>
         <ScrollTop />
     </div>
-
 </template>

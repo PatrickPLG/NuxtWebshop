@@ -10,5 +10,5 @@ function cancelOrder() {
 </script>
 
 <template>
-    <Button label="Cancel order" severity="danger" outlined class="w-full" @click="cancelOrder" />
+    <Button label="Cancel order" severity="danger" outlined class="w-full md:w-auto" @click="cancelOrder" />
 </template>

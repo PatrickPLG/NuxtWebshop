@@ -18,5 +18,5 @@ function submitOrder(user: User) {
 </script>
 
 <template>
-    <Button label="Submit order" class="w-full" @click="submitOrder(user)" />
+    <Button label="Submit order" class="w-full md:w-auto" @click="submitOrder(user)" />
 </template>

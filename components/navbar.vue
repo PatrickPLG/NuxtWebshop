@@ -47,15 +47,16 @@ const isIndexPage = computed(() => route.path === '/');
 <template>
     <Toast />
     <div :class="[{ 'mb-4': !isIndexPage }, 'sticky top-0 z-50 shadow-md bg-white']" class="card">
-        <Menubar :model="items" class="rounded-none w-full">
+        <Menubar :model="items" class="rounded-none w-full flex flex-wrap">
             <template #item="{ item, props, hasSubmenu }">
                 <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-                    <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+                    <a v-ripple :href="href" v-bind="props.action" @click="navigate" class="flex items-center p-2">
                         <span :class="item.icon" />
                         <span class="ml-2">{{ item.label }}</span>
                     </a>
                 </router-link>
-                <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
+                <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action"
+                    class="flex items-center p-2">
                     <span :class="item.icon" />
                     <span class="ml-2">{{ item.label }}</span>
                     <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
