@@ -8,7 +8,9 @@ const isLoading = ref(true);
 
 onMounted(async () => {
     try {
-        const response = await api.getProductByCategory(route.params.name.toString());
+        console.log(route.params);
+        const categoryId = parseInt(route.params.name as string, 10);
+        const response = await api.getProductByCategory(categoryId);
         products.value = response.data;
         isLoading.value = false;
     } catch (error) {

@@ -15,15 +15,15 @@ export default defineNuxtConfig({
   ],
   primevue: {
     options: {
-        theme: {
-            preset: Aura,
-            options: {
-              prefix: 'p-',
-              darkModeSelector: '.light-theme',
-              
-            }
-        }
+      theme: {
+          preset: Aura,
+          options: {
+            prefix: 'p-',
+            darkModeSelector: '.light-theme',
+            
+          }
+      }
     }
   },
   css: ['primeicons/primeicons.css'],
-})
+});

@@ -3,8 +3,15 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute } from '#imports';
 import api from '~/services/api';
 
-const categories = ref<{ label: string, icon: string, route: string }[]>([]);
-const items = ref([
+const categories = ref<{ label: string, icon: string, route: string, id: number }[]>([]);
+interface MenuItem {
+    label: string;
+    icon: string;
+    route?: string;
+    items?: MenuItem[];
+}
+
+const items = ref<MenuItem[]>([
     {
         label: 'Home',
         icon: 'pi pi-home',
@@ -25,15 +32,22 @@ const items = ref([
 onMounted(async () => {
     try {
         const response = await api.getAllCategories();
+        console.log(response.data);
         categories.value = response.data.map(category => ({
             label: category.category,
             icon: category.icon,
-            route: `/category/${category.category.toLowerCase()}`
+            id: category.id,
+            route: `/category/${category.id}`,
         }));
         // Add categories to the 'Category' submenu
         const categoryMenu = items.value.find(item => item.label === 'Category');
         if (categoryMenu && categoryMenu.items) {
-            (categoryMenu.items as { label: string; icon: string; route: string }[]).push(...categories.value);
+            categoryMenu.items = categories.value.map(category => ({
+                label: category.label,
+                icon: category.icon,
+                route: `/category/${category.id}`,
+                id: category.id,
+            }));
         }
     } catch (error) {
         console.error('Error fetching categories:', error);
