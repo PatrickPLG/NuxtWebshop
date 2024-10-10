@@ -7,6 +7,7 @@ const props = defineProps<{
     products: Product[];
 }>();
 
+console.log('ProductGrid props:', props.products[0]);
 const truncateTitle = (title: string, maxLength: number) => {
     maxLength = maxLength || 20;
     return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
@@ -51,11 +52,12 @@ const sortedProducts = computed(() => {
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
             <div v-for="product in sortedProducts" :key="product.id">
+                
                 <Card style="" class="">
                     <template #header>
                         <div
                             class="relative mx-auto h-96 w-full overflow-hidden rounded-tr-md rounded-tl-md flex items-center justify-center">
-                            <Image :src="product.image" alt="Image" preview class="h-full" />
+                            <Image :src="product.imageUrl" alt="Image" preview class="h-full" />
                             <Tag icon="pi pi-dollar" :value="product.price.toFixed(2)" severity="primary"
                                 class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
                         </div>
