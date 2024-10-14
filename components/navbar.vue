@@ -1,81 +1,63 @@
-<script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
-import { useRoute } from '#imports';
-import api from '~/services/api';
-
-const categories = ref<{ label: string, icon: string, route: string, id: number }[]>([]);
-interface MenuItem {
-    label: string;
-    icon: string;
-    route?: string;
-    items?: MenuItem[];
-}
-
-const items = ref<MenuItem[]>([
-    {
-        label: 'Home',
-        icon: 'pi pi-home',
-        route: '/'
-    },
-    {
-        label: 'Category',
-        icon: 'pi pi-bars',
-        items: []
-    },
-    {
-        label: 'Cart',
-        icon: 'pi pi-shopping-cart',
-        route: '/cart'
-    },
-]);
-
-onMounted(async () => {
+<script setup>
+  import { ref, onMounted } from 'vue';
+  import api from '~/services/api';
+  
+  const categories = ref([]);
+  const dropdownOpen = ref(false);
+  
+  const toggleDropdown = () => {
+    dropdownOpen.value = !dropdownOpen.value;
+  };
+  
+  onMounted(async () => {
     try {
-        const response = await api.getAllCategories();
-        console.log(response.data);
-        categories.value = response.data.map(category => ({
-            label: category.category,
-            icon: category.icon,
-            id: category.id,
-            route: `/category/${category.id}`,
-        }));
-        // Add categories to the 'Category' submenu
-        const categoryMenu = items.value.find(item => item.label === 'Category');
-        if (categoryMenu && categoryMenu.items) {
-            categoryMenu.items = categories.value.map(category => ({
-                label: category.label,
-                icon: category.icon,
-                route: `/category/${category.id}`,
-                id: category.id,
-            }));
-        }
+      const response = await api.getAllCategories();
+      categories.value = response.data.map(category => ({
+        label: category.category,
+        icon: category.icon,
+        id: category.id,
+      }));
     } catch (error) {
-        console.error('Error fetching categories:', error);
+      console.error('Error fetching categories:', error);
     }
-});
-
-const route = useRoute();
-const isIndexPage = computed(() => route.path === '/');
-</script>
+  });
+  </script>
 
 <template>
-    <Toast />
-    <div :class="[{ 'mb-4': !isIndexPage }, 'sticky top-0 z-50 shadow-md bg-white']" class="card">
-        <Menubar :model="items" class="rounded-none w-full flex flex-wrap">
-            <template #item="{ item, props, hasSubmenu }">
-                <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-                    <a v-ripple :href="href" v-bind="props.action" @click="navigate" class="flex items-center p-2">
-                        <span :class="item.icon" />
-                        <span class="ml-2">{{ item.label }}</span>
-                    </a>
-                </router-link>
-                <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action"
-                    class="flex items-center p-2">
-                    <span :class="item.icon" />
-                    <span class="ml-2">{{ item.label }}</span>
-                    <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
-                </a>
-            </template>
-        </Menubar>
-    </div>
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+      <div class="flex space-x-4">
+        <NuxtLink to="/" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+          <i class="pi pi-home"></i>
+          <span>Home</span>
+        </NuxtLink>
+        <div class="relative">
+          <button @click="toggleDropdown" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+            <i class="pi pi-bars"></i>
+            <span>Category</span>
+          </button>
+          <div v-if="dropdownOpen" class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+            <ul>
+              <li v-for="category in categories" :key="category.id" class="px-4 py-2 hover:bg-gray-100">
+                <NuxtLink :to="`/category/${category.id}`" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+                  <i :class="category.icon"></i>
+                  <span>{{ category.label }}</span>
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="flex space-x-4">
+        <NuxtLink to="/account/dashboard" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+          <i class="pi pi-user"></i>
+          <span>Account</span>
+        </NuxtLink>
+        <NuxtLink to="/cart" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+          <i class="pi pi-shopping-cart"></i>
+          <span>Cart</span>
+        </NuxtLink>
+      </div>
+    </nav>
 </template>
+  
+  
