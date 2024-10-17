@@ -5,18 +5,20 @@ import {jwtDecode} from 'jwt-decode';
 import type { Product } from '~/types/product';
 
 interface DecodedToken {
-  id: number;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier': string;
 }
 
 export const useFavoritesStore = defineStore('favorites', () => {
   const favorites = ref<Product[]>([]);
-  const userId = ref<number | null>(null);
+  const userId = ref<string | null>(null);
 
   onMounted(() => {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode<DecodedToken>(token);
-      userId.value = decoded.id;
+      console.log(decoded);
+      userId.value = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      console.log('User ID:', userId.value);
       fetchFavorites();
     }
   });
@@ -31,7 +33,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
   async function addFavorite(product: Product) {
     if (!favorites.value.find((item) => item.id === product.id)) {
       favorites.value.push(product);
-      await axios.post('https://localhost:8081/api/favorites', { userId: userId.value, productId: product.id });
+      await axios.post('https://localhost:8081/api/favorites', { UserID: userId.value, ProductID: product.id });
     }
   }
 
