@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '~/stores/auth';
 import { useFavoritesStore } from '~/stores/favorites';
-
 definePageMeta({
   middleware: ['auth'],
 });
@@ -46,7 +45,7 @@ onMounted(() => {
     <h1 v-if="user" class="text-2xl font-bold mb-4">Welcome, {{ user }}</h1>
     <p v-else>Please log in to view your dashboard.</p>
     <button @click="authStore.logout" class="p-button p-component p-button-danger mb-4">Logout</button>
-    
+
     <div v-if="favoritesStore.favorites.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <Card v-for="product in favoritesStore.favorites" :key="product.id" class="p-card">
         <template #header>
@@ -60,7 +59,8 @@ onMounted(() => {
           <p class="font-bold">${{ product.price }}</p>
         </template>
         <template #footer>
-          <Button label="Remove from Favorites" icon="pi pi-times" class="p-button-danger" @click="favoritesStore.removeFavorite(product.id)" />
+          <Button label="Remove from Favorites" icon="pi pi-times" class="p-button-danger"
+            @click="favoritesStore.removeFavorite(product.id)" />
         </template>
       </Card>
     </div>

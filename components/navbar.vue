@@ -3,11 +3,15 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import Menubar from 'primevue/menubar';
 import api from '~/services/api';
+import { useAuthStore } from '~/stores/auth';
+import LoginRegisterModal from '~/components/LoginRegisterModal.vue';
 
 const categories = ref([]);
 const dropdownOpen = ref(false);
 const dropdownRef = ref(null);
 const router = useRouter();
+const authStore = useAuthStore();
+const loginRegisterModalRef = ref(null);
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
@@ -51,7 +55,14 @@ const items = ref([
   {
     label: 'Account',
     icon: 'pi pi-user',
-    command: () => router.push('/account/dashboard')
+    command: () => {
+      console.log(authStore.isLoggedIn);
+      if (authStore.isLoggedIn) {
+        router.push('/account/dashboard');
+      } else {
+        loginRegisterModalRef.value.visible = true;
+      }
+    }
   },
   {
     label: 'Cart',
@@ -72,5 +83,6 @@ watch(categories, (newCategories) => {
 <template>
   <nav class="bg-white shadow-md p-2 rounded-none sticky top-0 z-50">
     <Menubar :model="items" class="flex justify-between items-center rounded-none" />
+    <LoginRegisterModal ref="loginRegisterModalRef" />
   </nav>
 </template>

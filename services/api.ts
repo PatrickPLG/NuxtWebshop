@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance, type AxiosResponse } from "axios";
 import type { Product } from "~/types/product";
+import { useAuthStore } from '~/stores/auth';
 
 // Function to retrieve token from localStorage
 const getToken = (): string | null => {
@@ -30,27 +31,35 @@ apiClient.interceptors.request.use(
   }
 );
 
+// Add an interceptor to handle token expiration
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+      const errorDescription = error.response.headers['www-authenticate'];
+      console.log('Interceptor:', errorDescription);
+      if (errorDescription && errorDescription.includes('invalid_token')) {
+        const authStore = useAuthStore();
+        authStore.clearToken();
+        authStore.logout();
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 const api = {
   getProducts(): Promise<AxiosResponse<Product[]>> {
-    return apiClient.get<Product[]>("/products");
+    return apiClient.get('/products');
   },
   getProduct(id: number): Promise<AxiosResponse<Product>> {
-    return apiClient.get<Product>(`/products/${id}`);
+    return apiClient.get(`/products/${id}`);
   },
   getProductByCategory(categoryId: number): Promise<AxiosResponse<Product[]>> {
-    return apiClient.get<Product[]>(`/categories/${categoryId}/products`);
+    return apiClient.get(`/categories/${categoryId}/products`);
   },
   async getAllCategories(): Promise<AxiosResponse<{ category: string; icon: string; id: number }[]>> {
-    const response = await apiClient.get<{ id: number; name: string }[]>("/categories");
-    const categoriesWithIcons = response.data.map((category) => ({
-      category: capitalizeFirstLetter(category.name),
-      icon: getCategoryIcon(category.name),
-      id: category.id,
-    }));
-    return {
-      ...response,
-      data: categoriesWithIcons,
-    };
+    return apiClient.get('/categories');
   },
 };
 

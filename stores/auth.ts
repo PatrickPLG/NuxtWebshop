@@ -1,9 +1,12 @@
-// stores/auth.ts
 import { defineStore } from 'pinia';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(null);
+  const errorMessage = ref<string | null>(null);
+  const router = useRouter();
 
   // Initialize token from localStorage on the client side
   onMounted(() => {
@@ -14,22 +17,54 @@ export const useAuthStore = defineStore('auth', () => {
 
   function setToken(newToken: string) {
     token.value = newToken;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('token', newToken);
-    }
+    localStorage.setItem('token', newToken);
   }
 
   function clearToken() {
-    token.value = null;
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
+    token.value = '';
+    localStorage.removeItem('token');
+  }
+
+  const isLoggedIn = computed(() => !!token.value);
+
+  async function login(username: string, password: string) {
+    try {
+      const response = await axios.post('https://localhost:8081/api/auth/login', {
+        username,
+        password,
+      });
+      const newToken = response.data.token;
+      setToken(newToken);
+      router.push('/account/dashboard');
+    } catch (error: any) {
+      console.log(errorMessage.value);
+      if (error.response && error.response.data) {
+        console.log(error.response.data);
+        errorMessage.value = error.response.data;
+      }
     }
   }
 
-  function logout() {
-    clearToken();
-    navigateTo('/account/login');
+  async function register(username: string, password: string) {
+    try {
+      const response = await axios.post('https://localhost:8081/api/auth/register', {
+        username,
+        password,
+      });
+      const newToken = response.data.token;
+      setToken(newToken);
+      router.push('/account/dashboard');
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        errorMessage.value = error.response.data.message;
+      }
+    }
   }
 
-  return { token, setToken, clearToken, logout };
+  async function logout() {
+    clearToken();
+    router.push('/');
+  }
+
+  return { token, setToken, clearToken, isLoggedIn, login, register, logout, errorMessage };
 });
