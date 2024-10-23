@@ -1,63 +1,76 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
-  import api from '~/services/api';
-  
-  const categories = ref([]);
-  const dropdownOpen = ref(false);
-  
-  const toggleDropdown = () => {
-    dropdownOpen.value = !dropdownOpen.value;
-  };
-  
-  onMounted(async () => {
-    try {
-      const response = await api.getAllCategories();
-      categories.value = response.data.map(category => ({
-        label: category.category,
-        icon: category.icon,
-        id: category.id,
-      }));
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  });
-  </script>
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import Menubar from 'primevue/menubar';
+import api from '~/services/api';
+
+const categories = ref([]);
+const dropdownOpen = ref(false);
+const dropdownRef = ref(null);
+const router = useRouter();
+
+const toggleDropdown = () => {
+  dropdownOpen.value = !dropdownOpen.value;
+};
+
+const handleClickOutside = (event) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+    dropdownOpen.value = false;
+  }
+};
+
+onMounted(async () => {
+  try {
+    const response = await api.getAllCategories();
+    categories.value = response.data.map(category => ({
+      label: category.category,
+      icon: category.icon,
+      id: category.id,
+    }));
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+const items = ref([
+  {
+    label: 'Home',
+    icon: 'pi pi-home',
+    command: () => router.push('/')
+  },
+  {
+    label: 'Category',
+    icon: 'pi pi-bars',
+    items: []
+  },
+  {
+    label: 'Account',
+    icon: 'pi pi-user',
+    command: () => router.push('/account/dashboard')
+  },
+  {
+    label: 'Cart',
+    icon: 'pi pi-shopping-cart',
+    command: () => router.push('/cart')
+  }
+]);
+
+watch(categories, (newCategories) => {
+  items.value[1].items = newCategories.map(category => ({
+    label: category.label,
+    icon: category.icon,
+    command: () => router.push(`/category/${category.id}`)
+  }));
+});
+</script>
 
 <template>
-    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
-      <div class="flex space-x-4">
-        <NuxtLink to="/" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-          <i class="pi pi-home"></i>
-          <span>Home</span>
-        </NuxtLink>
-        <div class="relative">
-          <button @click="toggleDropdown" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-            <i class="pi pi-bars"></i>
-            <span>Category</span>
-          </button>
-          <div v-if="dropdownOpen" class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
-            <ul>
-              <li v-for="category in categories" :key="category.id" class="px-4 py-2 hover:bg-gray-100">
-                <NuxtLink :to="`/category/${category.id}`" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-                  <i :class="category.icon"></i>
-                  <span>{{ category.label }}</span>
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="flex space-x-4">
-        <NuxtLink to="/account/dashboard" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-          <i class="pi pi-user"></i>
-          <span>Account</span>
-        </NuxtLink>
-        <NuxtLink to="/cart" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-          <i class="pi pi-shopping-cart"></i>
-          <span>Cart</span>
-        </NuxtLink>
-      </div>
-    </nav>
+  <nav class="bg-white shadow-md p-2 rounded-none sticky top-0 z-50">
+    <Menubar :model="items" class="flex justify-between items-center rounded-none" />
+  </nav>
 </template>
-  
-  

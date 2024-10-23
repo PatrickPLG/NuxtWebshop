@@ -19,13 +19,15 @@ useHead({
 </script>
 
 <template>
-  <!-- <div>
-    <NuxtRouteAnnouncer />
-    
-  </div> -->
-  <div class="p-component">
-    <Navbar />
-    <NuxtPage />
-    <Footer />
+  <div class="flex flex-col min-h-screen">
+    <header>
+      <Navbar />
+    </header>
+    <main class="flex-grow">
+      <NuxtPage />
+    </main>
+    <footer>
+      <Footer />
+    </footer>
   </div>
 </template>

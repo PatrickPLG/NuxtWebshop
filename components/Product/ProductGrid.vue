@@ -75,6 +75,6 @@ const sortedProducts = computed(() => {
                 </Card>
             </div>
         </div>
-        <ScrollTop />
+        <ScrollTop icon="pi pi-arrow-up" />
     </div>
 </template>
